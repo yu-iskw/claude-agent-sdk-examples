@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Agent SDK Demo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- Sidebar: session history + agent selector -->
+  <aside id="sidebar">
+    <div id="sidebar-header">
+      <h2>Conversations</h2>
+      <button id="new-chat-btn" title="Start a new conversation">+ New</button>
+    </div>
+
+    <div id="agent-select-wrap">
+      <label for="agent-select">Agent</label>
+      <select id="agent-select">
+        <option value="">Default (chat-assistant)</option>
+      </select>
+    </div>
+
+    <div id="sessions-list">
+      <!-- Populated by app.js -->
+    </div>
+  </aside>
+
+  <!-- Main chat area -->
+  <main id="main">
+    <header id="chat-header">
+      <span id="chat-title">Claude Agent SDK Demo</span>
+      <span id="agent-badge">chat-assistant</span>
+    </header>
+
+    <!-- Messages or empty state -->
+    <div id="messages">
+      <div id="empty-state">
+        <h1>Claude Agent SDK</h1>
+        <p>
+          A ChatGPT-like chatbot powered by <code>@anthropic-ai/claude-agent-sdk</code>,
+          loading agents and settings from <code>.claude/</code> directories.
+        </p>
+        <div class="suggestions">
+          <button class="suggestion-btn" data-prompt="What agents are loaded from the .claude/ directory?">
+            What agents are loaded from .claude/?
+          </button>
+          <button class="suggestion-btn" data-prompt="Explain how this app uses settingSources to load CLAUDE.md and settings.json">
+            How does settingSources work here?
+          </button>
+          <button class="suggestion-btn" data-prompt="What is the sandbox configuration in this app and why is it useful?">
+            What sandbox restrictions are active?
+          </button>
+          <button class="suggestion-btn" data-prompt="How would I extend this chatbot to work as a Slack bot?">
+            How do I extend this to a Slack bot?
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div id="input-area">
+      <div id="input-wrap">
+        <textarea
+          id="message-input"
+          rows="1"
+          placeholder="Message Claude..."
+          autofocus
+        ></textarea>
+        <button id="send-btn" title="Send message" disabled>
+          <svg viewBox="0 0 16 16"><path d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"/></svg>
+        </button>
+      </div>
+      <p id="input-footer">
+        Powered by <strong>@anthropic-ai/claude-agent-sdk</strong> ·
+        Agents from <code>.claude/agents/</code> · Sandbox enabled ·
+        <a href="/api/agents" target="_blank">View loaded agents ↗</a>
+      </p>
+    </div>
+  </main>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>
