@@ -2,7 +2,7 @@
 name: parallel-executor
 description: Orchestrates parallel task execution. Plans task decomposition, executes independent subtasks concurrently via background agents, coordinates sequential phases, and verifies results.
 tools: Read, Write, Edit, Glob, Grep, Bash, Task
-model: sonnet
+model: inherit
 ---
 
 # Parallel Executor Agent

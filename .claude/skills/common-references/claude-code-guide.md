@@ -52,18 +52,19 @@ Configuration for hooks, permissions, and environment:
 
 ## Available Skills
 
-| Skill                        | Invoke With                     | Purpose                        |
-| ---------------------------- | ------------------------------- | ------------------------------ |
-| initialize-project           | `/initialize-project`           | Bootstrap from template        |
-| setup-dev-env                | `/setup-dev-env`                | Set up development environment |
-| lint-and-fix                 | `/lint-and-fix`                 | Auto-fix linting issues        |
-| test-and-fix                 | `/test-and-fix`                 | Fix failing tests              |
-| build-and-fix                | `/build-and-fix`                | Fix build errors               |
-| clean-project                | `/clean-project`                | Hard reset environment         |
-| node-upgrade                 | `/node-upgrade`                 | Upgrade dependencies           |
-| security-vulnerability-audit | `/security-vulnerability-audit` | Security scanning              |
-| improve-claude-config        | `/improve-claude-config`        | Self-improvement               |
-| fix-issue                    | `/fix-issue <number>`           | Fix GitHub issues              |
+| Skill                        | Invoke With                     | Purpose                                                                             |
+| ---------------------------- | ------------------------------- | ----------------------------------------------------------------------------------- |
+| initialize-project           | `/initialize-project`           | Bootstrap from template                                                             |
+| setup-dev-env                | `/setup-dev-env`                | Set up development environment                                                      |
+| lint-and-fix                 | `/lint-and-fix`                 | Auto-fix linting issues                                                             |
+| test-and-fix                 | `/test-and-fix`                 | Fix failing tests                                                                   |
+| build-and-fix                | `/build-and-fix`                | Fix build errors                                                                    |
+| claude-agent-sdk             | `/claude-agent-sdk`             | Develop TypeScript using Claude Agent SDK v1 (sandbox + MCP) with verification loop |
+| clean-project                | `/clean-project`                | Hard reset environment                                                              |
+| node-upgrade                 | `/node-upgrade`                 | Upgrade dependencies                                                                |
+| security-vulnerability-audit | `/security-vulnerability-audit` | Security scanning                                                                   |
+| improve-claude-config        | `/improve-claude-config`        | Self-improvement                                                                    |
+| fix-issue                    | `/fix-issue <number>`           | Fix GitHub issues                                                                   |
 
 ## Available Agents
 
