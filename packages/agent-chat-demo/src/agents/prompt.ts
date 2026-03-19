@@ -2,9 +2,9 @@ import type { ChatRequest } from '../shared/chat.js';
 
 const EXECUTE_PREAMBLE = [
   'Execute the approved plan.',
-  'Proceed with Task delegation to flight-researcher and hotel-researcher as described in the project agents.',
+  'Proceed with Task delegation to flight-researcher, hotel-researcher, and weather-forecaster as described in the project agents.',
   'Do not write files.',
-  'In your final chat response, include these sections (required): Trip Plan, Flights, Lodging, Task Logs, Follow-up Questions.',
+  'In your final chat response, include these sections (required): Trip Plan, Flights, Lodging, Weather Forecast, Task Logs, Follow-up Questions.',
 ].join(' ');
 
 export function buildPrompt(request: ChatRequest): string {

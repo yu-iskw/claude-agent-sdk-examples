@@ -14,6 +14,15 @@ describe('agent chat demo workspace assets', () => {
     expect(config.context7.command).toBe('npx');
   });
 
+  it('ships the weather forecaster markdown agent', () => {
+    const agent = fs.readFileSync(
+      path.join(appRoot, '.claude', 'agents', 'weather-forecaster.md'),
+      'utf8',
+    );
+
+    expect(agent).toContain('mcp__weatherTools__get-random-weather-forecast');
+  });
+
   it('declares project settings so the SDK can load CLAUDE.md and .claude resources', () => {
     const settings = JSON.parse(
       fs.readFileSync(path.join(appRoot, '.claude', 'settings.json'), 'utf8'),

@@ -1,6 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { query, type Options, type SDKMessage } from '@anthropic-ai/claude-agent-sdk';
+import {
+  query,
+  type McpServerConfig,
+  type Options,
+  type SDKMessage,
+} from '@anthropic-ai/claude-agent-sdk';
 import type { ActivityEvent } from '../shared/activity.js';
 import type { ChatRequest, ChatResponse } from '../shared/chat.js';
 import { parseOrchestrationFromAssistantText } from '../shared/orchestration.js';
@@ -9,6 +14,7 @@ import { claudeWorkspace } from '../shared/workspace.js';
 import { buildPrompt } from './prompt.js';
 import { activitiesFromSdkMessage, findInitMessage, traceExtrasFromInit } from './sdk-activity.js';
 import { buildTrace } from './trace.js';
+import { weatherMcpServer } from './weather-tool.js';
 
 const context7ConfigPath = path.join(claudeWorkspace, '.mcp.json');
 
@@ -47,17 +53,16 @@ export const TRIP_PLANNER_ALLOWED_DOMAINS = [
   'accor.com',
 ] as const;
 
-type McpConfig = Record<
-  string,
-  {
-    command: string;
-    args?: string[];
-  }
->;
+type McpConfig = Record<string, McpServerConfig>;
 
 function loadMcpServers(): McpConfig {
   const file = fs.readFileSync(context7ConfigPath, 'utf8');
-  return JSON.parse(file) as McpConfig;
+  const configuredServers = JSON.parse(file) as McpConfig;
+
+  return {
+    ...configuredServers,
+    weatherTools: weatherMcpServer,
+  };
 }
 
 function extractSessionId(messages: SDKMessage[]): string | undefined {
