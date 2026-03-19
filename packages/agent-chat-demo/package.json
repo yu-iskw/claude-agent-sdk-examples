@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"tsx watch src/server/index.ts\"",
     "build": "vite build && tsc -p tsconfig.server.json",
+    "dev": "concurrently \"vite\" \"tsx watch src/server/index.ts\"",
     "start": "node dist/server/index.js",
     "test": "vitest run"
   },
@@ -14,7 +14,10 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
+    "remark-breaks": "^4.0.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

@@ -89,6 +89,7 @@ This decomposes tasks into independent subtasks with file ownership, executes th
 | `fix-issue`                    | Fix a GitHub issue end-to-end (view, branch, fix, test, PR)                                    |
 | `improve-claude-config`        | Self-improvement skill for evolving Claude Code configuration                                  |
 | `initialize-project`           | Initialize a new project from the template (rename packages, update metadata)                  |
+| `claude-agent-sdk`             | Develop TypeScript code using Claude Agent SDK v1 (sandbox + MCP) with a verification loop     |
 | `lint-and-fix`                 | Run linters and fix violations, formatting errors, or style mismatches using Trunk             |
 | `manage-adr`                   | Manage Architecture Decision Records (init, create, list, link ADRs in `docs/adr`)             |
 | `manage-changelog`             | Manage changelogs with Changie (init, add fragments, batch releases, merge into CHANGELOG.md)  |

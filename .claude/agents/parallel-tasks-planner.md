@@ -2,7 +2,7 @@
 name: parallel-tasks-planner
 description: Plans and decomposes complex tasks into mutually exclusive subtasks for parallel execution. Use when facing large tasks that can benefit from concurrent subagent work.
 tools: Read, Grep, Glob, Bash
-model: sonnet
+model: inherit
 ---
 
 # Parallel Tasks Planner Agent
