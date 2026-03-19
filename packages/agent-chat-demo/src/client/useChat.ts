@@ -4,6 +4,7 @@ import type { ChatMessage, ChatResponse, OrchestrationPlan } from '../shared/cha
 import { postChatStream } from './api/chatApi';
 import type { ManualCheckState } from './chat/orchestrationChecklist';
 import { manualFromCheckboxChecked } from './chat/orchestrationChecklist';
+import { tryStartLoadingPhase, type LoadingPhase } from './chat/singleFlight';
 import {
   executeResponseToAssistantMessage,
   formatBackendCompletionError,
@@ -18,8 +19,6 @@ const starterMessages: ChatMessage[] = [
     text: 'Hi! I am a Claude Agent SDK demo assistant. I run inside the app workspace so I can use the local CLAUDE.md, .claude settings, markdown agents, skills, rules, and the Context7 MCP plugin.\n\nSend a trip request to get an **orchestration** first (SDK orchestration mode, no tools). The **orchestration prose and orchestration graph** appear **in this chat** with a **TODO checklist** (manual checkmarks plus optional SDK-based estimates from live activity). For the latest orchestration, approval controls (checkbox + Approve & run) are embedded inside the orchestration message card. The workspace sidebar shows **live SDK activity**, **orchestration status**, parse warnings, and **runtime trace**. Approval is not done by typing in chat.',
   },
 ];
-
-type LoadingPhase = 'idle' | 'plan' | 'execute';
 
 const MAX_ACTIVITY_LOG = 100;
 const MAX_PLAN_ACTIVITY = 200;
@@ -153,6 +152,10 @@ export function useChat() {
   );
 
   async function sendMessage(nextMessage: string) {
+    if (!tryStartLoadingPhase(loadingPhaseRef, 'plan')) {
+      return;
+    }
+
     const userMessage: ChatMessage = {
       id: crypto.randomUUID(),
       role: 'user',
@@ -226,7 +229,7 @@ export function useChat() {
   async function approveAndExecutePlan() {
     const sessionId = planSessionId;
     const planMsgId = activePlanMessageIdRef.current;
-    if (!sessionId || !planMsgId) {
+    if (!sessionId || !planMsgId || !tryStartLoadingPhase(loadingPhaseRef, 'execute')) {
       return;
     }
 
@@ -269,6 +272,7 @@ export function useChat() {
         },
       ]);
     } finally {
+      loadingPhaseRef.current = 'idle';
       executingPlanMessageIdRef.current = null;
       setLoadingPhase('idle');
     }

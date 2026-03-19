@@ -101,7 +101,12 @@ export function App() {
 
           <div className="panel">
             <h2>Quick prompts</h2>
-            <button className="ghost" onClick={() => void sendMessage(quickPrompt)} type="button">
+            <button
+              className="ghost"
+              disabled={loading}
+              onClick={() => void sendMessage(quickPrompt)}
+              type="button"
+            >
               Run trip-planning prompt
             </button>
           </div>
