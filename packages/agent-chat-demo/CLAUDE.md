@@ -7,8 +7,8 @@ Build a ChatGPT-style web app powered by Claude Agent SDK while behaving like Cl
 ## Configuration layers
 
 - **Project settings** ([`.claude/settings.json`](.claude/settings.json)): `env` and `permissions` for sessions that load this workspace via `settingSources: ['project']`. Sandbox policy is **not** duplicated here.
-- **Model** ([`src/server/agent-runner.ts`](src/server/agent-runner.ts) `baseQueryOptions().model`): `'haiku'` so each `query()` session default is explicit, not tied to the Claude Code CLI default.
-- **Sandbox and egress** ([`src/server/agent-runner.ts`](src/server/agent-runner.ts) `baseQueryOptions().sandbox`): canonical allowlists (`TRIP_PLANNER_ALLOWED_DOMAINS`, workspace read/write, `denyWrite` above the package). The web server enforces this for every `query()` call.
+- **Model** ([`src/agents/agent-runner.ts`](src/agents/agent-runner.ts) `baseQueryOptions().model`): `'haiku'` so each `query()` session default is explicit, not tied to the Claude Code CLI default.
+- **Sandbox and egress** ([`src/agents/agent-runner.ts`](src/agents/agent-runner.ts) `baseQueryOptions().sandbox`): canonical allowlists (`TRIP_PLANNER_ALLOWED_DOMAINS`, workspace read/write, `denyWrite` above the package). The web server enforces this for every `query()` call.
 - **MCP**: definitions in [`.mcp.json`](.mcp.json); the server passes them as `mcpServers` (no separate `enabledPlugins` entry for Context7).
 - **Agents / skills / rules**: markdown under [`.claude/`](.claude/) as usual.
 
@@ -29,4 +29,4 @@ Build a ChatGPT-style web app powered by Claude Agent SDK while behaving like Cl
 
 ## Claude Code CLI in this folder
 
-Interactive `claude` in this directory does not inherit the demo’s sandbox JSON from `settings.json`; sandbox for the product is defined in `agent-runner.ts`. Align behavior manually if you rely on both entry points.
+Interactive `claude` in this directory does not inherit the demo’s sandbox JSON from `settings.json`; sandbox for the product is defined in `src/agents/agent-runner.ts`. Align behavior manually if you rely on both entry points.
