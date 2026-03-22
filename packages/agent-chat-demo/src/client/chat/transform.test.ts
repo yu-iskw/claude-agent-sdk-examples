@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import type { ChatResponse, OrchestrationPlan } from '../src/shared/chat';
+import type { ChatResponse, OrchestrationPlan } from '../../shared/chat';
 import {
   executeResponseToAssistantMessage,
   formatBackendCompletionError,
   formatExecuteError,
   planResponseToChatUpdates,
-} from '../src/client/chat/transform';
+} from './transform';
 
 const validPlan: OrchestrationPlan = {
   version: 1,
@@ -78,6 +78,9 @@ describe('client chat transformers', () => {
       'Lodging',
       '- Hotel option B (should be removed)',
       '',
+      'Weather Forecast',
+      '- Sunny outlook (should be removed)',
+      '',
       '```json',
       JSON.stringify(validPlan),
       '```',
@@ -99,6 +102,7 @@ describe('client chat transformers', () => {
     expect(assistantMessage.text).not.toContain('Trip Plan');
     expect(assistantMessage.text).not.toContain('Flights');
     expect(assistantMessage.text).not.toContain('Lodging');
+    expect(assistantMessage.text).not.toContain('Weather Forecast');
 
     // Sidebar prose should match what the user sees in the chat card.
     expect(planProse).toBe(assistantMessage.text);
@@ -116,6 +120,9 @@ describe('client chat transformers', () => {
       '',
       '### Lodging',
       '- hotel option (removed)',
+      '',
+      '### Weather Forecast',
+      '- outlook (removed)',
       '',
       '```json',
       JSON.stringify(validPlan),
@@ -138,6 +145,7 @@ describe('client chat transformers', () => {
     expect(assistantMessage.text).not.toContain('## Trip Plan');
     expect(assistantMessage.text).not.toContain('### Flights');
     expect(assistantMessage.text).not.toContain('### Lodging');
+    expect(assistantMessage.text).not.toContain('### Weather Forecast');
   });
 
   it('uses empty-display fallback and preserves raw reply in sidebar prose', () => {

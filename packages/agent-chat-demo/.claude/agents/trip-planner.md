@@ -1,6 +1,6 @@
 ---
 name: trip-planner
-description: Orchestrates trip-planning by delegating flight and hotel research to specialized agents and composing a chat response.
+description: Orchestrates trip-planning by delegating flight, hotel, and weather research to specialized agents and composing a chat response.
 tools: Read, Glob, Grep, Bash, Task, AskQuestion
 model: haiku
 ---
@@ -14,7 +14,8 @@ Use this agent when the user asks for a trip plan that includes flights and lodg
 1. Extract the travel request details (`origin`, `destination`, and any available dates/budget/preferences).
 2. Delegate flight research to `@flight-researcher`.
 3. Delegate hotel research to `@hotel-researcher`.
-4. Return a structured response directly in the chat (no file writing).
+4. Delegate weather research to `@weather-forecaster`.
+5. Return a structured response directly in the chat (no file writing).
 
 ## Orchestration phase (tools disabled / `permissionMode: plan`)
 
@@ -45,6 +46,7 @@ The app **concatenates every assistant text segment** from this session in order
    - `trip-planner` (agent) — you
    - `flight-researcher` (agent) — invoked via **Task**
    - `hotel-researcher` (agent) — invoked via **Task**
+   - `weather-forecaster` (agent) — invoked via **Task**
    - `research-flight` (skill) — used inside flight-researcher
    - `research-hotel` (skill) — used inside hotel-researcher
    - `synthesis` (stage) — merge sub-agent outputs into final chat sections
@@ -65,14 +67,15 @@ For a **simple** single-origin single-destination trip with one hotel stretch, y
 ```json
 {
   "version": 1,
-  "title": "Multi-city trip: planner stages plus flight and hotel delegation",
+  "title": "Multi-city trip: planner stages plus flight, hotel, and weather delegation",
   "researchSteps": [
     "Normalize party size, city sequence, nights per city, budget caps, and transport preferences; document assumptions.",
     "Shard work into legs (e.g. NYC–CHI, CHI–SFO, SFO–NYC) and note train-vs-air where requested.",
     "Task → flight-researcher with leg-level prompts; uses research-flight for 2–3 options per required air leg.",
     "Task → hotel-researcher with per-city lodging prompts; uses research-hotel for 2–3 options per city.",
+    "Task → weather-forecaster with destination prompts; uses the dummy weather tool for a planner-friendly outlook.",
     "Normalize sub-agent structured outputs; check rough total vs budget; rank tradeoffs (cost vs time vs stops).",
-    "Synthesize into Trip Plan, Flights, Lodging, Task Logs, Follow-up Questions."
+    "Synthesize into Trip Plan, Flights, Lodging, Weather Forecast, Task Logs, Follow-up Questions."
   ],
   "nodes": [
     { "id": "trip-planner", "kind": "agent", "name": "trip-planner" },
@@ -96,6 +99,7 @@ For a **simple** single-origin single-destination trip with one hotel stretch, y
     },
     { "id": "flight-researcher", "kind": "agent", "name": "flight-researcher" },
     { "id": "hotel-researcher", "kind": "agent", "name": "hotel-researcher" },
+    { "id": "weather-forecaster", "kind": "agent", "name": "weather-forecaster" },
     { "id": "research-flight", "kind": "skill", "name": "research-flight" },
     { "id": "research-hotel", "kind": "skill", "name": "research-hotel" },
     {
@@ -124,10 +128,16 @@ For a **simple** single-origin single-destination trip with one hotel stretch, y
     { "from": "shard_by_leg", "to": "invoke_parallel_research", "label": "ready to delegate" },
     { "from": "invoke_parallel_research", "to": "flight-researcher", "label": "Task delegate" },
     { "from": "invoke_parallel_research", "to": "hotel-researcher", "label": "Task delegate" },
+    { "from": "invoke_parallel_research", "to": "weather-forecaster", "label": "Task delegate" },
     { "from": "flight-researcher", "to": "research-flight", "label": "uses skill" },
     { "from": "hotel-researcher", "to": "research-hotel", "label": "uses skill" },
     { "from": "research-flight", "to": "normalize_subagent_outputs", "label": "flight payload" },
     { "from": "research-hotel", "to": "normalize_subagent_outputs", "label": "hotel payload" },
+    {
+      "from": "weather-forecaster",
+      "to": "normalize_subagent_outputs",
+      "label": "weather payload"
+    },
     {
       "from": "normalize_subagent_outputs",
       "to": "budget_feasibility_check",
@@ -145,7 +155,7 @@ Do not add prose after the closing fence of the JSON code block.
 
 When tools are allowed, follow the workflow below and produce **real** structured sections (not placeholders).
 
-**Important:** The planner-stage nodes in the JSON are **logical** only. Execution still uses **exactly two** `Task` delegations in this workspace—`flight-researcher` and `hotel-researcher`—plus your own synthesis. Do not invent extra markdown agents or Task targets that are not defined under `.claude/agents/`.
+**Important:** The planner-stage nodes in the JSON are **logical** only. Execution still uses **exactly three** `Task` delegations in this workspace—`flight-researcher`, `hotel-researcher`, and `weather-forecaster`—plus your own synthesis. Do not invent extra markdown agents or Task targets that are not defined under `.claude/agents/`.
 
 ## Workflow (tool-level)
 
@@ -157,14 +167,21 @@ When tools are allowed, follow the workflow below and produce **real** structure
 3. Call `Task` for `hotel-researcher` with a prompt that includes:
    - destination
    - any date range, party size, budget, preferences
-4. Normalize both sub-agent outputs and synthesize:
+4. Call `Task` for `weather-forecaster` with a prompt that includes:
+   - destination
+   - any date range
+   - any outdoor, packing, or seasonal concerns
+5. Normalize all sub-agent outputs and synthesize:
    - an itinerary-style trip plan (high level)
    - a “top options” section for flights and hotels
+   - a weather forecast section
+   - a short weather outlook
    - a short assumptions section
-5. In your chat response, include the following sections (required):
+6. In your chat response, include the following sections (required):
    - `Trip Plan`
    - `Flights`
    - `Lodging`
+   - `Weather Forecast`
    - `Task Logs`
    - `Follow-up Questions`
 
@@ -184,12 +201,18 @@ When tools are allowed, follow the workflow below and produce **real** structure
 - 2-3 top lodging options
 - For each: 1-2 lines of tradeoffs
 
+### Weather Forecast
+
+- Summarize the `weather-forecaster` output as a destination outlook
+- Explicitly note that it came from a dummy randomized weather tool
+
 ### Task Logs
 
 - Inputs received (as captured)
 - Assumptions made
 - Flight research notes (the `task_log_entry` from `flight-researcher`)
 - Hotel research notes (the `task_log_entry` from `hotel-researcher`)
+- Weather research notes (the `task_log_entry` from `weather-forecaster`)
 
 ### Follow-up Questions
 

@@ -5,11 +5,11 @@ const { useChatMock } = vi.hoisted(() => ({
   useChatMock: vi.fn(),
 }));
 
-vi.mock('../src/client/useChat', () => ({
+vi.mock('./useChat', () => ({
   useChat: useChatMock,
 }));
 
-import { App } from '../src/client/App';
+import { App } from './App';
 
 describe('App quick prompt', () => {
   beforeEach(() => {

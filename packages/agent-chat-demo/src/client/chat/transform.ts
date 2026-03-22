@@ -6,7 +6,8 @@ const PLAN_EMPTY_FALLBACK_TEXT =
 
 /**
  * Defense-in-depth: the orchestration phase should not include final itinerary content.
- * We defensively strip any prose blocks that look like `Trip Plan`, `Flights`, or `Lodging`.
+ * We defensively strip any prose blocks that look like `Trip Plan`, `Flights`, `Lodging`, or
+ * `Weather Forecast`.
  *
  * This intentionally matches multiple formatting styles:
  * - Markdown headings like `### Trip Plan`
@@ -18,10 +19,16 @@ function stripItinerarySectionsForOrchestration(text: string): string {
   const tripPlanStart = /^(?:#{1,6}\s*)?(?:Multi[-\s]?City\s+)?Trip\s+Plan\s*:?.*$/i;
   const flightsStart = /^(?:#{1,6}\s*)?Flights\s*:?.*$/i;
   const lodgingStart = /^(?:#{1,6}\s*)?Lodging\s*:?.*$/i;
+  const weatherForecastStart = /^(?:#{1,6}\s*)?Weather\s+Forecast\s*:?.*$/i;
 
   const isStripSectionStart = (line: string): boolean => {
     const t = line.trim();
-    return tripPlanStart.test(t) || flightsStart.test(t) || lodgingStart.test(t);
+    return (
+      tripPlanStart.test(t) ||
+      flightsStart.test(t) ||
+      lodgingStart.test(t) ||
+      weatherForecastStart.test(t)
+    );
   };
 
   const orchestrationBoundaryLabels =

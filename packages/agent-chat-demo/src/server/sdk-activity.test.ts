@@ -1,8 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import type { SDKMessage } from '@anthropic-ai/claude-agent-sdk';
-import { activitiesFromSdkMessage, traceExtrasFromInit } from '../src/server/sdk-activity.js';
+import { activitiesFromSdkMessage, traceExtrasFromInit } from './sdk-activity.js';
 
 const fixedTs = 1_700_000_000_000;
+
+/** Placeholder IDs that satisfy SDKMessage UUID template types in tests. */
+const testUuid = '00000000-0000-4000-8000-000000000099';
+const testSessionId = '00000000-0000-4000-8000-0000000000aa';
 
 function initMessage(partial: Partial<Extract<SDKMessage, { type: 'system'; subtype: 'init' }>>) {
   return {
@@ -57,8 +61,8 @@ describe('activitiesFromSdkMessage', () => {
       task_id: 't1',
       description: 'Research flights',
       task_type: 'subagent',
-      uuid: 'u',
-      session_id: 's',
+      uuid: testUuid,
+      session_id: testSessionId,
     } as SDKMessage;
     const events = activitiesFromSdkMessage(msg, fixedTs);
     expect(events[0]).toEqual({
@@ -80,8 +84,8 @@ describe('activitiesFromSdkMessage', () => {
       last_tool_name: 'WebFetch',
       summary: 'Fetching page',
       usage: { total_tokens: 1, tool_uses: 2, duration_ms: 99 },
-      uuid: 'u',
-      session_id: 's',
+      uuid: testUuid,
+      session_id: testSessionId,
     } as SDKMessage;
     const events = activitiesFromSdkMessage(msg, fixedTs);
     expect(events[0]?.kind).toBe('task_progress');
@@ -101,8 +105,8 @@ describe('activitiesFromSdkMessage', () => {
       status: 'completed',
       summary: 'Done',
       output_file: '/tmp/out',
-      uuid: 'u',
-      session_id: 's',
+      uuid: testUuid,
+      session_id: testSessionId,
     } as SDKMessage;
     const events = activitiesFromSdkMessage(msg, fixedTs);
     expect(events[0]).toEqual({
@@ -123,8 +127,8 @@ describe('activitiesFromSdkMessage', () => {
       parent_tool_use_id: null,
       elapsed_time_seconds: 3,
       task_id: 't1',
-      uuid: 'u',
-      session_id: 's',
+      uuid: testUuid,
+      session_id: testSessionId,
     } as SDKMessage;
     const events = activitiesFromSdkMessage(msg, fixedTs);
     expect(events[0]).toMatchObject({
@@ -141,8 +145,8 @@ describe('activitiesFromSdkMessage', () => {
       type: 'tool_use_summary',
       summary: 'Ran several tools',
       preceding_tool_use_ids: [],
-      uuid: 'u',
-      session_id: 's',
+      uuid: testUuid,
+      session_id: testSessionId,
     } as SDKMessage;
     const events = activitiesFromSdkMessage(msg, fixedTs);
     expect(events[0]).toEqual({
@@ -158,8 +162,8 @@ describe('activitiesFromSdkMessage', () => {
       type: 'system',
       subtype: 'status',
       status: 'compacting',
-      uuid: 'u',
-      session_id: 's',
+      uuid: testUuid,
+      session_id: testSessionId,
     } as SDKMessage;
     const events = activitiesFromSdkMessage(msg, fixedTs);
     expect(events[0]).toEqual({
@@ -175,8 +179,8 @@ describe('activitiesFromSdkMessage', () => {
       type: 'stream_event',
       event: {} as never,
       parent_tool_use_id: null,
-      uuid: 'u',
-      session_id: 's',
+      uuid: testUuid,
+      session_id: testSessionId,
     } as SDKMessage;
     expect(activitiesFromSdkMessage(msg, fixedTs)).toEqual([]);
   });
@@ -186,7 +190,7 @@ describe('activitiesFromSdkMessage', () => {
       type: 'user',
       message: { role: 'user', content: 'hi' },
       parent_tool_use_id: null,
-      session_id: 's',
+      session_id: testSessionId,
     } as SDKMessage;
     expect(activitiesFromSdkMessage(msg, fixedTs)).toEqual([]);
   });

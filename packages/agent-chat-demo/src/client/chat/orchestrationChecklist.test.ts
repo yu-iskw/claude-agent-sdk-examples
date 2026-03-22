@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { ActivityEvent } from '../src/shared/activity';
-import type { OrchestrationPlan } from '../src/shared/chat';
+import type { ActivityEvent } from '../../shared/activity';
+import type { OrchestrationPlan } from '../../shared/chat';
 import {
   activityEventsSearchBlob,
   computeSuggestedCompletions,
@@ -10,7 +10,7 @@ import {
   nodeCompletionBadge,
   normalizeChecklistText,
   stepCompletionBadge,
-} from '../src/client/chat/orchestrationChecklist';
+} from './orchestrationChecklist';
 
 const fixedTs = 1_700_000_000_000;
 

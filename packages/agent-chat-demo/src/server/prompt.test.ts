@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { buildPrompt } from '../src/server/prompt.js';
-import type { ChatRequest } from '../src/shared/chat';
+import { buildPrompt } from './prompt.js';
+import type { ChatMessage, ChatRequest } from '../shared/chat.js';
 
-function historyWithMessages(count: number) {
-  const history = [];
+function historyWithMessages(count: number): ChatMessage[] {
+  const history: ChatMessage[] = [];
   for (let i = 0; i < count; i++) {
     history.push({
       id: `m${i}`,
@@ -52,9 +52,10 @@ describe('server prompt builder', () => {
 
     expect(prompt).toContain('Execute the approved plan.');
     expect(prompt).toContain(
-      'Proceed with Task delegation to flight-researcher and hotel-researcher',
+      'Proceed with Task delegation to flight-researcher, hotel-researcher, and weather-forecaster',
     );
     expect(prompt).toContain('Latest user message: (none — continue from session context.)');
+    expect(prompt).toContain('Weather Forecast');
     expect(prompt).toContain('Recent transcript:\n');
 
     // Still only last 6 transcript messages

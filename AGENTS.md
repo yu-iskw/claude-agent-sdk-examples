@@ -1,4 +1,4 @@
-# TypeScript Monorepo - Claude Code Memory
+# TypeScript Monorepo - Agent Instructions
 
 ## Project Overview
 

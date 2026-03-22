@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { buildTrace } from '../src/server/trace.js';
-import { claudeWorkspace } from '../src/server/config.js';
+import { buildTrace } from './trace.js';
+import { claudeWorkspace } from './config.js';
 
 describe('server trace builder', () => {
   it('builds trace for plan phase with parseWarning', () => {

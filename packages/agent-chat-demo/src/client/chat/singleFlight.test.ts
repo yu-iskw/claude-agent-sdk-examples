@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { tryStartLoadingPhase } from '../src/client/chat/singleFlight';
+import { tryStartLoadingPhase } from './singleFlight';
 
 describe('tryStartLoadingPhase', () => {
   it('claims the single-flight slot only once until reset', () => {
