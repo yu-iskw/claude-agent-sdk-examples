@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { SDKMessage } from '@anthropic-ai/claude-agent-sdk';
-import { activitiesFromSdkMessage, traceExtrasFromInit } from '../src/server/sdk-activity.js';
+import { activitiesFromSdkMessage, traceExtrasFromInit } from './sdk-activity.js';
 
 const fixedTs = 1_700_000_000_000;
 

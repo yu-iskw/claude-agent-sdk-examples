@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
-import { TRIP_PLANNER_ALLOWED_DOMAINS } from '../src/server/agent-runner.js';
+import { TRIP_PLANNER_ALLOWED_DOMAINS } from './agent-runner.js';
 
-const appRoot = path.resolve(import.meta.dirname, '..');
+const appRoot = path.resolve(import.meta.dirname, '../..');
 
 describe('agent chat demo workspace assets', () => {
   it('ships the local .mcp.json with the Context7 plugin', () => {

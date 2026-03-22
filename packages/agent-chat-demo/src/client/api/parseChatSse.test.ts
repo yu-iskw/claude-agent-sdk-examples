@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { appendSseBuffer, extractSseEnvelopes } from '../src/client/api/parseChatSse';
-import type { ChatResponse } from '../src/shared/chat';
+import { appendSseBuffer, extractSseEnvelopes } from './parseChatSse';
+import type { ChatResponse } from '../../shared/chat';
 
 describe('parseChatSse', () => {
   it('extractSseEnvelopes parses one event per block', () => {

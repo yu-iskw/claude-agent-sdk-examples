@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { buildPrompt } from '../src/server/prompt.js';
-import type { ChatRequest } from '../src/shared/chat';
+import { buildPrompt } from './prompt.js';
+import type { ChatRequest } from '../shared/chat';
 
 function historyWithMessages(count: number) {
   const history = [];

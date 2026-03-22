@@ -51,7 +51,7 @@ This app runs a two-phase chat loop (SDK orchestration mode, then approved tool 
   - `src/server/index.ts`: Express app + static client serving
   - `src/server/http/apiRoutes.ts`: HTTP route registration for `/api/health` and `/api/chat`
 - `src/agents/agent-runner.ts`: SDK `query()` orchestration (plan vs execute), optional per-message activity emission, trace wiring
-- `src/agents/weather-tool.ts`: in-process MCP server with the dummy randomized weather forecast tool
+- `src/agents/tools/weather-tool.ts`: in-process MCP server with the dummy randomized weather forecast tool
 - `src/agents/sdk-activity.ts`: maps `SDKMessage` → `ActivityEvent[]` and derives trace extras from `system/init`
 - `src/agents/prompt.ts`: pure prompt builder extracted from `agent-runner.ts`
 - `src/agents/trace.ts`: dependency-injected trace builder extracted from `agent-runner.ts`

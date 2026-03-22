@@ -14,7 +14,7 @@ import { claudeWorkspace } from '../shared/workspace.js';
 import { buildPrompt } from './prompt.js';
 import { activitiesFromSdkMessage, findInitMessage, traceExtrasFromInit } from './sdk-activity.js';
 import { buildTrace } from './trace.js';
-import { weatherMcpServer } from './weather-tool.js';
+import { createWeatherMcpServer } from './tools/weather-tool.js';
 
 const context7ConfigPath = path.join(claudeWorkspace, '.mcp.json');
 
@@ -61,7 +61,7 @@ function loadMcpServers(): McpConfig {
 
   return {
     ...configuredServers,
-    weatherTools: weatherMcpServer,
+    weatherTools: createWeatherMcpServer(),
   };
 }
 
