@@ -6,7 +6,7 @@ import {
   parseOrchestrationFromAssistantText,
   stripOrchestrationJsonFence,
   validateOrchestrationPlan,
-} from './orchestration';
+} from './orchestration.js';
 
 const validPlan = {
   version: 1,

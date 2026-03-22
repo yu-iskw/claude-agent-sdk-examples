@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { buildPrompt } from './prompt.js';
-import type { ChatRequest } from '../shared/chat';
+import type { ChatMessage, ChatRequest } from '../shared/chat.js';
 
-function historyWithMessages(count: number) {
-  const history = [];
+function historyWithMessages(count: number): ChatMessage[] {
+  const history: ChatMessage[] = [];
   for (let i = 0; i < count; i++) {
     history.push({
       id: `m${i}`,
