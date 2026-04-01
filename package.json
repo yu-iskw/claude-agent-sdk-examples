@@ -24,7 +24,7 @@
     "test": "vitest run"
   },
   "devDependencies": {
-    "@anthropic-ai/claude-agent-sdk": "^0.2.79",
+    "@anthropic-ai/claude-agent-sdk": "^0.2.87",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.0.3",
     "eslint-config-prettier": "^10.1.8",
