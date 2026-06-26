@@ -1,0 +1,43 @@
+{
+  "name": "@typescript-template/deep-agent-chat-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "agent:execute": "tsx src/cli/run-agent.ts execute",
+    "agent:plan": "tsx src/cli/run-agent.ts plan",
+    "build": "vite build && tsc -p tsconfig.server.json",
+    "dev": "concurrently \"vite\" \"tsx watch src/server/index.ts\"",
+    "start": "node dist/server/index.js",
+    "test": "vitest run --exclude '**/dist/**'"
+  },
+  "dependencies": {
+    "@langchain/core": "^1.2.0",
+    "@langchain/google-genai": "^2.0.0",
+    "@langchain/langgraph": "^1.4.4",
+    "@langchain/langgraph-checkpoint": "^1.1.2",
+    "@langchain/mcp-adapters": "^1.0.0",
+    "cors": "^2.8.6",
+    "deepagents": "^1.10.5",
+    "express": "^5.2.1",
+    "langchain": "^1.5.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-markdown": "^10.1.0",
+    "remark-breaks": "^4.0.0",
+    "remark-gfm": "^4.0.1",
+    "yaml": "^2.8.2",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^9.2.1",
+    "tsx": "^4.21.0",
+    "vite": "^8.0.1"
+  }
+}
