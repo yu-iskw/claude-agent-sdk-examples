@@ -108,8 +108,8 @@ const randomWeatherForecast = tool(
   },
   {
     annotations: {
-      readOnly: true,
-      openWorld: false,
+      readOnlyHint: true,
+      openWorldHint: false,
     },
   },
 );

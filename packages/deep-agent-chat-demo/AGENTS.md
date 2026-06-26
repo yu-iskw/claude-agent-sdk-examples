@@ -1,32 +1,31 @@
-# agent-chat-demo workspace memory
+# deep-agent-chat-demo workspace memory
 
 ## Goal
 
-Build a ChatGPT-style web app powered by Claude Agent SDK while behaving like Claude Code inside this isolated app workspace.
+Build a ChatGPT-style web app powered by DeepAgents JS + Gemini API while preserving the same web/API contract as `agent-chat-demo`.
 
 ## Configuration layers
 
-- **Project settings** ([`.claude/settings.json`](.claude/settings.json)): `env` and `permissions` for sessions that load this workspace via `settingSources: ['project']`. Sandbox policy is **not** duplicated here.
-- **Model** ([`src/agents/agent-runner.ts`](src/agents/agent-runner.ts) `baseQueryOptions().model`): `'haiku'` so each `query()` session default is explicit, not tied to the Claude Code CLI default.
-- **Sandbox and egress** ([`src/agents/agent-runner.ts`](src/agents/agent-runner.ts) `baseQueryOptions().sandbox`): canonical allowlists (`TRIP_PLANNER_ALLOWED_DOMAINS`, workspace read/write, `denyWrite` above the package). The web server enforces this for every `query()` call.
-- **MCP**: definitions in [`.mcp.json`](.mcp.json); the server passes them as `mcpServers` (no separate `enabledPlugins` entry for Context7).
-- **Agents / skills / rules**: markdown under [`.claude/`](.claude/) as usual.
+- **Project settings** ([`.agents/settings.json`](.agents/settings.json)): workspace metadata for agents, skills, and rules loaded from `.agents/`.
+- **Model** ([`src/agents/deepagent-models.ts`](src/agents/deepagent-models.ts)): default Gemini model (`gemini-3.1-flash-lite`) and API key resolution.
+- **Runner** ([`src/agents/deepagent-runner.ts`](src/agents/deepagent-runner.ts)): plan and execute profiles, SSE activity, session persistence.
+- **MCP**: definitions in [`.mcp.json`](.mcp.json); Context7 for current library documentation.
+- **Agents / skills / rules**: markdown under [`.agents/`](.agents/) as usual.
 
 ## Required local resources
 
-- Load `.claude/settings.json` from this workspace.
-- Use markdown agents in `.claude/agents/`.
-- Use markdown skills in `.claude/skills/` when relevant.
-- Follow markdown rules in `.claude/rules/`.
-- Use Context7 via `.mcp.json` (loaded by the server) when you need current library or framework documentation.
+- Load `.agents/settings.json` from this workspace.
+- Use markdown agents in `.agents/agents/`.
+- Use markdown skills in `.agents/skills/` when relevant.
+- Follow markdown rules in `.agents/rules/`.
+- Use Context7 via `.mcp.json` when you need current library or framework documentation.
 
 ## Product constraints
 
-- The web UI renders chat as GitHub-flavored Markdown and shows orchestration as a **structured list** parsed from plan JSON (not a visual graph/diagram unless we add one later).
+- The web UI renders chat as GitHub-flavored Markdown and shows orchestration as a **structured list** parsed from plan JSON.
 - Keep the current UX web-first, but design shared orchestration so a Slack bot can reuse it later.
 - Treat this package directory as the only writable workspace for the agent session.
-- Explain how sandboxing affects any command or tool suggestions.
 
-## Claude Code CLI in this folder
+## CLI
 
-Interactive `claude` in this directory does not inherit the demo’s sandbox JSON from `settings.json`; sandbox for the product is defined in `src/agents/agent-runner.ts`. Align behavior manually if you rely on both entry points.
+Use `pnpm agent:plan` and `pnpm agent:execute` for headless runs. See [README.md](README.md) and [docs/rfc/0001-deepagents-gemini-chat-demo.md](docs/rfc/0001-deepagents-gemini-chat-demo.md).

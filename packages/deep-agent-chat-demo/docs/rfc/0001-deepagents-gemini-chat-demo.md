@@ -28,7 +28,7 @@ GEMINI_API_KEY=... pnpm --filter @typescript-template/deep-agent-chat-demo agent
 
 ## Environment
 
-See [`.env.example`](../.env.example).
+See [`.env.example`](../../.env.example).
 
 ## References
 
